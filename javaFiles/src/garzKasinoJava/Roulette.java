@@ -6,7 +6,7 @@ import java.util.Scanner;  // Import the Scanner class
  *	The odds depends on what method you are using. 
  */
 public class Roulette extends Games{
-	String[] methods = {"single", "even", "third"};
+	String[] methods = {"single", "even", "dozen"};
 	int[] odds = {36, 1, 2};
 	int guess;
 	int ballNumber;
@@ -28,22 +28,24 @@ public class Roulette extends Games{
 	public boolean winCondition(String method) {
 		switch(method) {
 		case "single":
-			if (guess == ballNumber){
+			if (guess == this.ballNumber){
 				return true;
 			}
 			else {
 				return false;
 			}
 		case "even":
-			if (ballNumber%2 == 0) {
+			if (this.ballNumber%2 == this.guess) {
 				return true;
 			}
 			
 			else {
 				return false;
 			}
-		case "double":
-			if ((guess == 0 && ballNumber <= 50) ||(guess == 1 && ballNumber > 50) ) {
+		case "dozen":
+			if ((guess == 1 && this.ballNumber <= 12) ||(guess == 2 && this.ballNumber > 12 
+			&& this.ballNumber <= 24) || (guess == 3 && this.ballNumber > 24 
+			&& this.ballNumber <= 36) ) {
 				return true;
 			}
 			else {
@@ -61,7 +63,7 @@ public class Roulette extends Games{
 	 */
 	public void payout() {
 		int index =findIndex(this.methods, this.method);
-		if(index <= 0) {
+		if(index >= 0) {
 			if (winCondition(this.method)){
 				System.out.println("Congrats you won some money!");
 				this.payout = this.input*this.odds[index];
@@ -77,18 +79,50 @@ public class Roulette extends Games{
 		}
 	}
 	
-	/*
-	 * This is the first method to make the decision on what kind of method you wanna gamble with.
-	 * Choose between the ones available or you will neither win or lose.
+
+	/* The setup method simply asks the user for the type of game and the guess for each gamble.
+	 * You must ask an valid answer if you want to continue...
 	 */
-	public void makeChoices() {
+	public void setup() {
 		Scanner methodChoice = new Scanner(System.in);
 		System.out.println("Choose the method of choice:");
-		System.out.println("In this case you can choose between single, even, double or third");
+		System.out.println("In this case you can choose between single, even, dozen");
 		this.method = methodChoice.nextLine();
-		System.out.println("You choose " + this.method + " as method!");
+		while(findIndex(this.methods, this.method) < 0) {
+			System.out.println("You choose a method that is not implemented... \n "
+					+ "Please choose between single, even, third\"");
+			this.method = methodChoice.nextLine();
+		}
+		if(this.method.equals("single")) {
+			System.out.println("Choose a single number to bet on!");
+			this.guess = methodChoice.nextInt();
+		}
+		else if(this.method.equals("even")) {
+			System.out.println("Choose 1 if you want odd numbers, Choose 0 for even numbers.");
+			this.guess = methodChoice.nextInt();
+		}
+		else {
+			System.out.println("Choose on 3 package of numbers here \n "
+					+ "If you want 1-12, pick 1. If you want 13-24, pick 2. If you want 25-36, pick 3.");
+			this.guess = methodChoice.nextInt();
+			while(this.guess <= 0 || this.guess > 3) {
+				System.out.println("Choose a legit choise from: [1, 2 or 3]");
+				this.guess = methodChoice.nextInt();
+			}
+		}
 		methodChoice.close();
-		
 	}
+	
+	/*
+	 * The Step method that the game proceedes by, each different game has a different step method!
+	 */
+	public void step() {
+		setup();
+		rollTable();
+		System.out.println("The rolled value is: "+this.ballNumber);
+		payout();
+	}
+	
 }
+
 	

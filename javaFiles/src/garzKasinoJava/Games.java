@@ -31,10 +31,9 @@ public class Games {
 		testGame.gamblingResult();
 		Roulette testRoulette = new Roulette();
 		String mode = "even";
-		testRoulette.rollTable();
-		testRoulette.makeChoices();
-		System.out.println(testRoulette.ballNumber);
-		System.out.println(testRoulette.winCondition(mode));
+		testRoulette.input = 2;
+		testRoulette.step();
+		System.out.println("The result of the gamble is: "+ testRoulette.payout);
 	}
 
 }
