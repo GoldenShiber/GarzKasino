@@ -7,11 +7,10 @@ public class Games {
 	int input = 0;
 	String gameName = "TestGame";
 	int payout = -9;
-	
-	public void gamblingResult() {
-		System.out.println("The input was "+ input+ " the chosen game was "+ gameName+ "and the result was "+
-				payout+ " in Garzbucks");
-	}
+	Scanner methodChoice = new Scanner(System.in);
+	String[] gameMethods = {"Roulette", "Dice"}; 
+	int saldo;
+	String option = "yes";
 	
 	/*
 	 * The find index method is used to determine if the method is allowed in the legal methods of gambling.
@@ -24,16 +23,45 @@ public class Games {
 		}
 		return -1;
 	}
-
+	/*
+	 * This methods makes the user choose a method, and how much you want to bet.
+	 */
+	public void chooseGameMethod() {
+		System.out.println("Choose a game method, currently there are Roulette or Dice, or you can exit with something else!");
+		this.gameName = methodChoice.nextLine();
+		int index = findIndex(this.gameMethods, this.gameName);
+		if (index >= 0) {
+			System.out.println("How much do you wanna bet?");
+			int bet = methodChoice.nextInt();
+			if (index == 0) {
+				Roulette testGame = new Roulette();
+				testGame.input = bet;
+				testGame.step();
+				this.saldo += testGame.payout;
+			}
+			else {
+				Dice testGame = new Dice();
+				testGame.input = bet;
+				testGame.step();
+				this.saldo += testGame.payout;
+			}
+			System.out.println("Your current saldo is: "+ this.saldo);
+			System.out.println("Wanna play again? In that case write yes");
+			methodChoice.nextLine();
+			this.option = methodChoice.nextLine();
+		}
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Games testGame = new Games();
-		testGame.gamblingResult();
-		Roulette testRoulette = new Roulette();
-		String mode = "even";
-		testRoulette.input = 2;
-		testRoulette.step();
-		System.out.println("The result of the gamble is: "+ testRoulette.payout);
+		testGame.saldo = 100;
+		while(testGame.option.equals("yes")) {
+			testGame.chooseGameMethod();
+		}
+		
 	}
 
 }

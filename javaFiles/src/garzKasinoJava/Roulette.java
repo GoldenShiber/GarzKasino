@@ -1,5 +1,4 @@
 package garzKasinoJava;
-import java.util.Scanner;  // Import the Scanner class
 
 /*  Roulette consists of a methods of winning, odds, input, random generated number
  *  and output Input and Output is inherited from the games class.
@@ -16,7 +15,7 @@ public class Roulette extends Games{
 	 * The Roll function rolls a ball in the alpha step with a number from 0 to 36.
 	 * In the future, this will also include a color to the number.
 	 */
-	public void rollTable() {
+	void rollTable() {
 		this.ballNumber = (int)(Math.random()*37);
 	}
 	
@@ -25,7 +24,7 @@ public class Roulette extends Games{
 	 * In the first version, you can only choose single, even or a third(dozen). 
 	 * That will however be increased in the future.
 	 */
-	public boolean winCondition(String method) {
+	boolean winCondition(String method) {
 		switch(method) {
 		case "single":
 			if (guess == this.ballNumber){
@@ -61,7 +60,7 @@ public class Roulette extends Games{
 	 * The pay out function determines the outcome of your game.
 	 * Currently you can only win three methods, and if the method is bad, no change of pay out is done..
 	 */
-	public void payout() {
+	void payout() {
 		int index =findIndex(this.methods, this.method);
 		if(index >= 0) {
 			if (winCondition(this.method)){
@@ -83,14 +82,14 @@ public class Roulette extends Games{
 	/* The setup method simply asks the user for the type of game and the guess for each gamble.
 	 * You must ask an valid answer if you want to continue...
 	 */
-	public void setup() {
-		Scanner methodChoice = new Scanner(System.in);
+	void setup() {
+		//Scanner methodChoice = new Scanner(System.in);
 		System.out.println("Choose the method of choice:");
 		System.out.println("In this case you can choose between single, even, dozen");
 		this.method = methodChoice.nextLine();
 		while(findIndex(this.methods, this.method) < 0) {
 			System.out.println("You choose a method that is not implemented... \n "
-					+ "Please choose between single, even, third\"");
+					+ "Please choose between single, even, dozen\"");
 			this.method = methodChoice.nextLine();
 		}
 		if(this.method.equals("single")) {
@@ -110,13 +109,13 @@ public class Roulette extends Games{
 				this.guess = methodChoice.nextInt();
 			}
 		}
-		methodChoice.close();
+		//methodChoice.close();
 	}
 	
 	/*
-	 * The Step method that the game proceedes by, each different game has a different step method!
+	 * The Step method that the game proceeds by, each different game has a different step method!
 	 */
-	public void step() {
+	void step() {
 		setup();
 		rollTable();
 		System.out.println("The rolled value is: "+this.ballNumber);
